@@ -18,10 +18,8 @@ python ukfundprices.py
 
 #TODO
 '''
-Use selenium or maybe phantom.js
-
 from selenium import webdriver
-browser = webdriver.Firefox()
+browser = webdriver.PhantomJS()
 browser.get('http://www.iii.co.uk/investment/detail?code=mex:VIUKGO&it=ukut')
 price = browser.find_element_by_class_name('price').text
 #print(elem.text)
