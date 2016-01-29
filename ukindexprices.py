@@ -14,10 +14,7 @@ P date {y}-{m}-{d} {hh}:{mm}:{ss} fund   price GBP
 Run cron daily/weekly/monthly
 
 python ukfundprices.py
-'''
 
-#TODO
-'''
 from selenium import webdriver
 browser = webdriver.PhantomJS()
 browser.get('http://www.iii.co.uk/investment/detail?code=mex:VIUKGO&it=ukut')
@@ -25,12 +22,15 @@ price = browser.find_element_by_class_name('price').text
 #print(elem.text)
 print(price)
 browser.quit()
-
 '''
 
-import requests
-from bs4 import BeautifulSoup
+
+#import requests
+#from bs4 import BeautifulSoup
 from datetime import datetime
+from selenium import webdriver
+from time import sleep
+
 
 # List of funds to look up. Tuple as names are never going to change
 funds = ('FIAAGY',
@@ -58,11 +58,13 @@ def make_ledger_str(fund, price):
 def get_prices():
     price_list = []
     for fund in funds:
-        url = requests.get(base_url + fund + end_url)
-        soup = BeautifulSoup(url.text, "lxml")
-        prices_span = soup.select('.price')
-        string = make_ledger_str(fund, prices_span[0].gettext())
+        browser = webdriver.PhantomJS()
+        browser.get(base_url + fund + end_url)
+        price = browser.find_element_by_class_name('price').text
+        string = make_ledger_str(fund, price)
         price_list.append(string)
+        browser.quit()
+        sleep(1)
     return price_list
 
 
