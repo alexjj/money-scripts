@@ -4,30 +4,13 @@ Index fund scraper.
 This python script will take a list of funds and look up their price from iii.co.uk,
 then write them to a pricesdb file for ledger-cli's usage.
 
-Process:
-For each fund in a list/tuple:
-
-Go to iii.co.uk website, find the span class=price and get the value
-Append to ledger.pricedb in format:
-P date {y}-{m}-{d} {hh}:{mm}:{ss} fund   price GBP
-
 Run cron daily/weekly/monthly
 
 python ukfundprices.py
-
-from selenium import webdriver
-browser = webdriver.PhantomJS()
-browser.get('http://www.iii.co.uk/investment/detail?code=mex:VIUKGO&it=ukut')
-price = browser.find_element_by_class_name('price').text
-#print(elem.text)
-print(price)
-browser.quit()
 '''
 
 
-#import requests
-#from bs4 import BeautifulSoup
-from datetime import datetime
+import datetime
 from selenium import webdriver
 from time import sleep
 
@@ -49,7 +32,7 @@ ledger_pricedb_file = '/home/alex/money/ledger.pricedb.test'
 # Make the ledger string
 
 def make_ledger_str(fund, price):
-    now = datetime.today()
+    now = datetime.datetime.today()
     timestamp = now.strftime("%Y/%m/%d %H:%M:%S")
     string = "P " + timestamp + " " + fund + 10 * " " + str(price) + " GBP"
     return string
