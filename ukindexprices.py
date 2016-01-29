@@ -47,7 +47,7 @@ def get_prices():
         string = make_ledger_str(fund, price)
         price_list.append(string)
         browser.quit()
-        sleep(1)
+        sleep(1)  #Kept getting connection refused
     return price_list
 
 
