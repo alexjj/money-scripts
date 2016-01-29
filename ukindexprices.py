@@ -1,4 +1,4 @@
-"""
+'''
 Index fund scraper.
 
 This python script will take a list of funds and look up their price from iii.co.uk,
@@ -14,31 +14,27 @@ P date {y}-{m}-{d} {hh}:{mm}:{ss} fund   price GBP
 Run cron daily/weekly/monthly
 
 python ukfundprices.py
+'''
 
-"""
-
-import requests, bs4, datetime
+import requests
+from bs4 import BeautifulSoup
+from datetime import datetime
 
 # List of funds to look up. Tuple as names are never going to change
-funds = ('FIAAGY', 
-'VVDVWE', 
-'VVFUSI',
-'MYKAAS', 
-'VIUKGO', 
-'VIGSCA')
+funds = ('FIAAGY',
+         'VVDVWE',
+         'VVFUSI',
+         'MYKAAS',
+         'VIUKGO',
+         'VIGSCA')
 
 base_url = 'http://www.iii.co.uk/investment/detail?code=mex:'
 end_url = '&it=ukut'
 
-ledger_pricedb_file ='/home/alex/money/ledger.pricedb.test'
+ledger_pricedb_file = '/home/alex/money/ledger.pricedb.test'
 
 
-#Process url via BeautifulSoup
-def make_soup(url):
-    html = urlopen(url).read()
-    return BeautifulSoup(html, "lxml")
-
-#Make the ledger string
+# Make the ledger string
 
 def make_ledger_str(fund, price):
     now = datetime.today()
@@ -47,27 +43,27 @@ def make_ledger_str(fund, price):
     return string
 
 
-
 def get_prices():
-#Iterate over all funds to generate dictionary of fund and price
-    prices = {}
+    price_list = []
     for fund in funds:
-        url = base_url + fund + end_url
-        soup = make_soup(url)
-        price = soup.select('.price')
-        prices[fund] = price
-    return prices
+        url = requests.get(base_url + fund + end_url)
+        soup = BeautifulSoup(url.text, "lxml")
+        prices_span = soup.select('.price')
+        string = make_ledger_str(fund, prices_span[0].gettext())
+        price_list.append(string)
+    return price_list
 
 
-    with open (ledger_pricedb_file, 'w') as text_file:
-            print(price_string, file=text_file)
-
-
-
-
+def write_prices(price_list):
+    with open(ledger_pricedb_file, 'a') as text_file:
+        for string in price_list:
+            print(string, file=text_file)
 
 
 
 
 if __name__ == "__main__":
-    get_prices()
+    price_list = get_prices()
+    write_prices(price_list)
+
+
