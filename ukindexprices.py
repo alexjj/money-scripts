@@ -16,6 +16,20 @@ Run cron daily/weekly/monthly
 python ukfundprices.py
 '''
 
+#TODO
+'''
+Use selenium or maybe phantom.js
+
+from selenium import webdriver
+browser = webdriver.Firefox()
+browser.get('http://www.iii.co.uk/investment/detail?code=mex:VIUKGO&it=ukut')
+price = browser.find_element_by_class_name('price').text
+#print(elem.text)
+print(price)
+browser.quit()
+
+'''
+
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
