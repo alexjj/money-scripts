@@ -9,7 +9,7 @@ Run cron daily/weekly/monthly
 
 python ukfundprices.py
 '''
-
+__author__ = "Alex Johnstone <alexjj@gmail.com>"
 
 import datetime
 from selenium import webdriver
