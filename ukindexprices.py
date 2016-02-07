@@ -1,3 +1,4 @@
+#!/usr/bin/python
 '''
 Index fund scraper.
 
@@ -21,12 +22,16 @@ funds = ('FIAAGY',
          'VVFUSI',
          'MYKAAS',
          'VIUKGO',
-         'VIGSCA')
+         'VIGSCA',
+         'VVUILG')
+
+# FIAAGY and MYKAAS prices are in p
+# TODO change to pounds
 
 base_url = 'http://www.iii.co.uk/investment/detail?code=mex:'
 end_url = '&it=ukut'
 
-ledger_pricedb_file = '/home/alex/money/ledger.pricedb.test'
+ledger_pricedb_file = '/home/alex/money/ledger.pricedb'
 
 
 # Make the ledger string
@@ -44,6 +49,7 @@ def get_prices():
         browser = webdriver.PhantomJS()
         browser.get(base_url + fund + end_url)
         price = browser.find_element_by_class_name('price').text
+        price = float(price)/100
         string = make_ledger_str(fund, price)
         price_list.append(string)
         browser.quit()
@@ -62,5 +68,3 @@ def write_prices(price_list):
 if __name__ == "__main__":
     price_list = get_prices()
     write_prices(price_list)
-
-

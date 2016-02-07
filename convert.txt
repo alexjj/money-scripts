@@ -1,0 +1,4 @@
+# Using Reckon
+
+#cc
+reckon -f ~/money/csv/hsbcworld.csv --contains-header -c 'USD' -a Liabilities:US:HSBC:World --suffixed -l ~/money/liabilities.us.hsbc.world.ledger -o ~/money/liabilities.us.hsbc.world.reckon.ledger

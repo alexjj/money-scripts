@@ -1,0 +1,13 @@
+# List of reports for ledger
+
+# Expenses by percent
+l bal --percent --sort "abs(total)" --depth 2 ^Expenses -X GBP
+
+#
+l csv reg -M --period "$LAST_MTH" ^expenses --format "%(account), %(quantity(amount)), %(commodity(amount)) \n" -l "commodity=~/USD/" -o money/$LAST_MTHusd.csv
+
+# Asset allocation split
+l bal --percent AssetAllocation
+
+# Print all ledger items in order to single file (useful for -j) (nb ledger not l)
+ledger print --sort date --date-format %Y/%m/%d> money/all.ledger
