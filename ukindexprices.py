@@ -26,7 +26,7 @@ funds = ('FIAAGY',
          'VVUILG')
 
 # FIAAGY and MYKAAS prices are in p
-# TODO change to pounds
+penny_funds = ('FIAAGY', 'MYKAAS')
 
 base_url = 'http://www.iii.co.uk/investment/detail?code=mex:'
 end_url = '&it=ukut'
@@ -39,7 +39,7 @@ ledger_pricedb_file = '/home/alex/money/ledger.pricedb'
 def make_ledger_str(fund, price):
     now = datetime.datetime.today()
     timestamp = now.strftime("%Y/%m/%d %H:%M:%S")
-    string = "P " + timestamp + " " + fund + 10 * " " + str(price) + " GBP"
+    string = "P " + timestamp + " " + fund + 14 * " " + str(price) + " GBP"
     return string
 
 
@@ -49,11 +49,12 @@ def get_prices():
         browser = webdriver.PhantomJS()
         browser.get(base_url + fund + end_url)
         price = browser.find_element_by_class_name('price').text
-        price = float(price)/100
+        if fund in penny_funds:
+            price = float(price) / 100
         string = make_ledger_str(fund, price)
         price_list.append(string)
         browser.quit()
-        sleep(1)  #Kept getting connection refused
+        sleep(1)  # Kept getting connection refused
     return price_list
 
 
@@ -61,8 +62,6 @@ def write_prices(price_list):
     with open(ledger_pricedb_file, 'a') as text_file:
         for string in price_list:
             print(string, file=text_file)
-
-
 
 
 if __name__ == "__main__":
