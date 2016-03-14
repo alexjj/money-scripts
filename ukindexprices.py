@@ -1,9 +1,13 @@
 #!/usr/bin/python
+import datetime
+from selenium import webdriver
+from time import sleep
+
 '''
 Index fund scraper.
 
-This python script will take a list of funds and look up their price from iii.co.uk,
-then write them to a pricesdb file for ledger-cli's usage.
+This python script will take a list of funds and look up their price from
+iii.co.uk, then write them to a pricesdb file for ledger-cli's usage.
 
 Run cron daily/weekly/monthly
 
@@ -11,12 +15,7 @@ python ukfundprices.py
 '''
 __author__ = "Alex Johnstone <alexjj@gmail.com>"
 
-import datetime
-from selenium import webdriver
-from time import sleep
-
-
-# List of funds to look up. Tuple as names are never going to change
+# List of funds to look up.
 funds = ('FIAAGY',
          'VVDVWE',
          'VVFUSI',
@@ -31,15 +30,27 @@ penny_funds = ('FIAAGY', 'MYKAAS')
 base_url = 'http://www.iii.co.uk/investment/detail?code=mex:'
 end_url = '&it=ukut'
 
-ledger_pricedb_file = '/home/alex/money/ledger.pricedb'
+pricedb_file = '/home/alex/money/prices.beancount'
 
+# ledger or beancount
+
+program = 'beancount'
+#program = 'ledger'
 
 # Make the ledger string
 
 def make_ledger_str(fund, price):
     now = datetime.datetime.today()
-    timestamp = now.strftime("%Y/%m/%d %H:%M:%S")
-    string = "P " + timestamp + " " + fund + 14 * " " + str(price) + " GBP"
+
+    if program == 'ledger':
+        timestamp = now.strftime("%Y/%m/%d %H:%M:%S")
+        string = "P {} {}                            {} GBP".format(timestamp, fund, price)
+    elif program == 'beancount':
+        timestamp = now.strftime("%Y-%m-%d")
+        string = "{} Price {}                            {} GBP".format(timestamp, fund, price)
+    else:
+        print("Only ledger or beancount")
+        quit()
     return string
 
 
@@ -59,7 +70,7 @@ def get_prices():
 
 
 def write_prices(price_list):
-    with open(ledger_pricedb_file, 'a') as text_file:
+    with open(pricedb_file, 'a') as text_file:
         for string in price_list:
             print(string, file=text_file)
 
