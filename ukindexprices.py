@@ -30,7 +30,7 @@ penny_funds = ('FIAAGY', 'MYKAAS')
 base_url = 'http://www.iii.co.uk/investment/detail?code=mex:'
 end_url = '&it=ukut'
 
-pricedb_file = '/home/alex/money/prices.beancount'
+pricedb_file = '/home/alex/money/test.prices'
 
 # ledger or beancount
 
@@ -47,7 +47,7 @@ def make_ledger_str(fund, price):
         string = "P {} {}                            {} GBP".format(timestamp, fund, price)
     elif program == 'beancount':
         timestamp = now.strftime("%Y-%m-%d")
-        string = "{} Price {}                            {} GBP".format(timestamp, fund, price)
+        string = "{} price {}                            {} GBP".format(timestamp, fund, price)
     else:
         print("Only ledger or beancount")
         quit()
