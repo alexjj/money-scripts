@@ -43,9 +43,6 @@ df.Credit = df.Credit * -1
 df['Debit'] = df['Credit'].where(df['Credit']<0,other=df['Debit'])
 df = df.drop(['Credit'], axis=1)
 
-# Date format
-df['Date'] = pd.to_datetime(df['Date'])
-
 with open(output_file, 'w') as o:
     for index, row in df.iterrows():
         payee_line = '{:%Y-%m-%d} * "{}"\n'.format(row['Date'], row['Description'])
