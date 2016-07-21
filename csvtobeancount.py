@@ -1,52 +1,27 @@
-# Convert Citi credit card CSV to beancount structure.
-# Todo
-'''
-Refunds and payments
-'''
+import pandas as pd
 
-import csv
-
-citi_csv = 'MC_709_CURRENT_VIEW.CSV'
-beancount_account = 'Liabilities:US:Citi'
-output_file = 'citi.beancount'
-
-def extract(filename):
-    xacts = []
-    with open(filename, newline='') as f:
-        reader = csv.reader(f)
-        for row in reader:
-                xacts.append([row[1],row[2],row[3]])
-        return xacts
 
 '''
+A simple script to convert transactions from my Citi credit card to beancount format.
+It does no smart matching or any magic, purely text manipulation.
+I still have to go through and assign expense categories. This may seem lazy (and it is)
+but the benefit of looking at each transaction is I understand where my money went.
+
+If I wanted super automagic finance team monkey wrench go!, I'd just use Mint.com
+
 beancount format:
 
 YYYY-MM-DD * "Payee"
-    Expenses:Category:Subcategory      99.99 USD
+    Expenses:Category:Subcategory         99.99 USD
     Liabilities:US:Citi
 '''
-    
-    
-def make_beancount_string(date, payee, amount):
-    # format date to be in beancount format
-    bean_date = date.strftime("%Y-%m-%d")
-    payee_line = '{} * "{}"'.format(bean_date, payee)
-    expense_line = 'Expenses:                     {} USD'.format(amount)
-    return payee_line, expense_line
-    
-def write_beancount_file(output, lines):
-    with open(output, 'w') as o:
-        o.writelines(lines)
 
-
-
-### Probably use pandas
-
-import pandas as pd
+__author__ = "Alex Johnstone <alexjj@gmail.com>"
 
 citi_csv = 'MC_709_CURRENT_VIEW.CSV'
 beancount_account = 'Liabilities:US:Citi'
 output_file = 'citi.beancount'
+liability_line = '    ' + beancount_account + '\n'
 
 # read csv
 df = pd.read_csv(citi_csv, encoding = "ISO-8859-1", thousands=',')
@@ -55,22 +30,24 @@ df = pd.read_csv(citi_csv, encoding = "ISO-8859-1", thousands=',')
 
 df = df.drop(['Status'], axis=1)
 
-# Remove \n
+# Remove \n and whitespaces
+df['Description'] = df['Description'].str.strip()
 
-df['Description'] = df['Description'].str.replace('\n','')
+# Set types
+df['Debit'] = pd.to_numeric(df['Debit'])
+df['Credit'] = pd.to_numeric(df['Credit'])
+df['Date'] = pd.to_datetime(df['Date'])
 
 # Move credits to negative debits
-df['Debit'] = df['Debit'].convert_objects(convert_numeric=True)
-df['Credit'] = df['Credit'].convert_objects(convert_numeric=True)
 df.Credit = df.Credit * -1
 df['Debit'] = df['Credit'].where(df['Credit']<0,other=df['Debit'])
 df = df.drop(['Credit'], axis=1)
 
 # Date format
-df['Date'] = df['Date'].convert_objects(convert_dates='coerce')
+df['Date'] = pd.to_datetime(df['Date'])
 
-# Check
-print(df)
-
-#xacts = df.values.tolist()
-#print(xacts)
+with open(output_file, 'w') as o:
+    for index, row in df.iterrows():
+        payee_line = '{:%Y-%m-%d} * "{}"\n'.format(row['Date'], row['Description'])
+        expense_line = '    Expenses: {:>45.2f} USD\n'.format(row['Debit'])
+        o.writelines([payee_line, expense_line, liability_line, '\n'])   
