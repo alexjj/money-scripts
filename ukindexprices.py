@@ -22,7 +22,8 @@ funds = ('FIAAGY',
          'MYKAAS',
          'VIUKGO',
          'VIGSCA',
-         'VVUILG')
+         'VVUILG',
+		 'VVLSRE')
 
 # FIAAGY and MYKAAS prices are in p
 penny_funds = ('FIAAGY', 'MYKAAS')
