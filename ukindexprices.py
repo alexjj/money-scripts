@@ -31,7 +31,7 @@ penny_funds = ('FIAAGY', 'MYKAAS')
 base_url = 'http://www.iii.co.uk/investment/detail?code=mex:'
 end_url = '&it=ukut'
 
-pricedb_file = '/home/alex/finances/prices.beancount'
+pricedb_file = '/home/alex/finance/prices.beancount'
 
 # ledger or beancount
 
