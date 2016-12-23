@@ -23,7 +23,7 @@ funds = ('FIAAGY',
          'VIUKGO',
          'VIGSCA',
          'VVUILG',
-		 'VVLSRE')
+         'VVLSRE')
 
 # FIAAGY and MYKAAS prices are in p
 penny_funds = ('FIAAGY', 'MYKAAS')
@@ -31,7 +31,7 @@ penny_funds = ('FIAAGY', 'MYKAAS')
 base_url = 'http://www.iii.co.uk/investment/detail?code=mex:'
 end_url = '&it=ukut'
 
-pricedb_file = '/home/alex/money/prices.beancount'
+pricedb_file = '/home/alex/finances/prices.beancount'
 
 # ledger or beancount
 

@@ -8,7 +8,7 @@ __author__ = "Alex Johnstone <alexjj@gmail.com>"
 
 import_csv = 'ExportData.csv'
 #Drop any transaction prior to this date
-cutoffdate = '2015-01-01'
+cutoffdate = '2016-01-01'
 
 
 df = pd.read_csv(import_csv, encoding = "ISO-8859-1", thousands=',')

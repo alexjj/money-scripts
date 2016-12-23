@@ -18,13 +18,13 @@ YYYY-MM-DD * "Payee"
 
 __author__ = "Alex Johnstone <alexjj@gmail.com>"
 
-citi_csv = 'MC_709_CURRENT_VIEW.CSV'
+citi_csv = '/Users/alex/Downloads/MC_709_CURRENT_VIEW.CSV'
 beancount_account = 'Liabilities:US:Citi'
-output_file = 'citi.beancount'
+output_file = '/Users/alex/Documents/citi.beancount'
 liability_line = '    ' + beancount_account + '\n'
 
 # read csv
-df = pd.read_csv(citi_csv, encoding = "ISO-8859-1", thousands=',')
+df = pd.read_csv(citi_csv, encoding="ISO-8859-1", thousands=',')
 
 # Drop unnecessary columns
 
@@ -40,11 +40,11 @@ df['Date'] = pd.to_datetime(df['Date'])
 
 # Move credits to negative debits
 df.Credit = df.Credit * -1
-df['Debit'] = df['Credit'].where(df['Credit']<0,other=df['Debit'])
+df['Debit'] = df['Credit'].where(df['Credit'] < 0, other=df['Debit'])
 df = df.drop(['Credit'], axis=1)
 
 with open(output_file, 'w') as o:
     for index, row in df.iterrows():
         payee_line = '{:%Y-%m-%d} * "{}"\n'.format(row['Date'], row['Description'])
         expense_line = '    Expenses: {:>45.2f} USD\n'.format(row['Debit'])
-        o.writelines([payee_line, expense_line, liability_line, '\n'])   
+        o.writelines([payee_line, expense_line, liability_line, '\n'])
