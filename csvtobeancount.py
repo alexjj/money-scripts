@@ -18,9 +18,9 @@ YYYY-MM-DD * "Payee"
 
 __author__ = "Alex Johnstone <alexjj@gmail.com>"
 
-citi_csv = '/Users/alex/Downloads/MC_709_CURRENT_VIEW.CSV'
+citi_csv = '/home/alex/Downloads/MC_223_CURRENT_VIEW.CSV'
 beancount_account = 'Liabilities:US:Citi'
-output_file = '/Users/alex/Documents/citi.beancount'
+output_file = '/home/alex/finance/citi.beancount'
 liability_line = '    ' + beancount_account + '\n'
 
 # read csv
