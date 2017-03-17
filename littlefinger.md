@@ -13,7 +13,7 @@ Here is a list of items I'd like it to generate:
 ### Weekly
 
 * Top 10 expenses that week
-* Balance of accounts
+* Balance of main accounts
 * Week on week change
 * Date of last update (or most recent transaction)
 
@@ -23,6 +23,7 @@ Here is a list of items I'd like it to generate:
 * Summary of all spending on top level categories year to date
 * Table of all spending categories
 * Change month on month
+* Balance on all accounts
 
 ### Quarterly
 
@@ -33,3 +34,8 @@ Here is a list of items I'd like it to generate:
 * Summary of all spending
 * Change in net worth (plot?)
 * Total saved
+* Various comparisons against previous year
+
+## Dual Currencies
+
+What should be done with the handling of multiple currencies in the reports.
