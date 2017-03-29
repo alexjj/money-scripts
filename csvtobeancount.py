@@ -45,6 +45,6 @@ df = df.drop(['Credit'], axis=1)
 
 with open(output_file, 'w') as o:
     for index, row in df.iterrows():
-        payee_line = '{:%Y-%m-%d} * "{}"\n'.format(row['Date'], row['Description'])
+        payee_line = '{:%Y-%m-%d} * "{}" ""\n'.format(row['Date'], row['Description'])
         expense_line = '    Expenses: {:.2f} USD\n'.format(row['Debit'])
         o.writelines([payee_line, expense_line, liability_line, '\n'])
