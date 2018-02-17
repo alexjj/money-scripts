@@ -16,7 +16,7 @@ python ukfundprices.py
 __author__ = "Alex Johnstone <alexjj@gmail.com>"
 
 # List of funds to look up.
-funds = ('FIAAGY',
+funds = ('FIAAGJ',
          'VVDVWE',
          'VVFUSI',
          'MYKAAS',
