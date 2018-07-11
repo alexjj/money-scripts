@@ -11,7 +11,7 @@ If I wanted super automagic finance team monkey wrench go!, I'd just use Mint.co
 
 beancount format:
 
-YYYY-MM-DD * "Payee"
+YYYY-MM-DD * "Payee" ""
     Expenses:Category:Subcategory         99.99 USD
     Liabilities:US:Citi
 '''
