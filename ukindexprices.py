@@ -7,7 +7,7 @@ from time import sleep
 Index fund scraper.
 
 This python script will take a list of funds and look up their price from
-iii.co.uk, then write them to a pricesdb file for ledger-cli's usage.
+iii.co.uk, then write them to a pricesdb file for ledger-cli (or beancount)'s usage.
 
 Run cron daily/weekly/monthly
 
