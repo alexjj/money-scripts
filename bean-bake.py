@@ -147,6 +147,8 @@ def bake_to_directory(webargs, output_dir, render_all_pages=True):
             r'/.*/doc/',
             # Skip monthly pages.
             # r'/view/year/\d\d\d\d/month/',
+            # skip prices
+            r'/view/year/\d\d\d\d/month/\d\d/prices/',
         ]
         ignore_regexps = '({})'.format('|'.join(regexps))
 
